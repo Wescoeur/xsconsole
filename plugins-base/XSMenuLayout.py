@@ -68,9 +68,14 @@ class XSMenuLayout:
                 ntpState = 'Disabled'
             
             for pif in data.derived.managementpifs([]):
+                isIpv4 = pif['primary_address_type'] == IPv4
+
                 inPane.AddStatusField(Lang('Device', 16), pif['device'])
                 inPane.AddStatusField(Lang('MAC Address', 16),  pif['MAC'])
-                inPane.AddStatusField(Lang('DHCP/Static IP', 16),  pif['ip_configuration_mode'])
+                inPane.AddStatusField(
+                    Lang('DHCP/Static IP', 16),
+                    pif['ip_configuration_mode' if isIpv4 else 'ipv6_configuration_mode']
+                )
 
                 inPane.AddStatusField(Lang('IP address', 16), data.ManagementIP(''))
                 inPane.AddStatusField(Lang('Netmask', 16),  data.ManagementNetmask(''))
